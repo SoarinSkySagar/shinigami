@@ -250,6 +250,19 @@ pub fn mock_transaction_legacy_sequence_v2(
     return mock_transaction_with(2, inputs, outputs, 0);
 }
 
+// Mock transaction version 1 with the specified 'sequence'
+// NOTE: only use to test invalid tx, because sequence is only valid when tx version = 2
+pub fn mock_transaction_legacy_sequence_v1(
+    script_sig: ByteArray, sequence: u32
+) -> EngineTransaction {
+    let mut inputs = ArrayTrait::<EngineTransactionInput>::new();
+    let outpoint = EngineOutPoint { txid: 0, vout: 0 };
+    let input = mock_transaction_input_with(outpoint, script_sig, ArrayTrait::new(), sequence);
+    inputs.append(input);
+    let outputs = ArrayTrait::<EngineTransactionOutput>::new();
+    return mock_transaction_with(1, inputs, outputs, 0);
+}
+
 //find last push_data opcode in a bytearray
 pub fn find_last_index(sig: ByteArray) -> u32 {
     let mut i = sig.len() - 1;
